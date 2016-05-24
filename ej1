@@ -1,0 +1,114 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+public partial class _Default : System.Web.UI.Page
+{
+   
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        HttpCookie myCookie = new HttpCookie("MyTestCookie");
+        DateTime now = DateTime.Now;
+
+        // Set the cookie value.
+        myCookie.Value = now.ToString();
+        // Set the cookie expiration date.
+        myCookie.Expires = now.AddMinutes(1);
+
+        // Add the cookie.
+        Response.Cookies.Add(myCookie);
+
+        Response.Write("<p> The cookie has been written.");
+
+       
+        // Read the cookie information and display it.
+        if (myCookie != null)
+            Response.Write("<p>" + myCookie.Name + "<p>" + myCookie.Value);
+        else
+            Response.Write("not found");
+    }
+    protected void Button1_Click1(object sender, EventArgs e)
+    {
+        Random r = new Random();
+        var a = 0;
+        var y = new int[4];
+        var picas = 0;
+        var fijas = 0;
+        y[0] = int.Parse(TextBox1.Text);
+        y[1] = int.Parse(TextBox2.Text);
+        y[2] = int.Parse(TextBox3.Text);
+        y[3] = int.Parse(TextBox4.Text);
+        var x = new int[4];
+       
+       
+            Label1.Text =  ""+y[0]+ y[1]+ y[2]+ y[3];
+        
+        for(a=0; a<2; a++)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                x[i] = r.Next(0, 9);
+                if (i > 0)
+                {
+                    for (int j = 0; j < i; j++)
+                    {
+                        if (x[i] == x[j])
+                        {
+                            x[i] = 1 + r.Next(0, 9);
+                            j--;
+                        }
+                    }
+                }
+            }
+          
+                Label5.Text = "" + x[0]+ x[1]+ x[2]+ x[3];
+
+            for (int i = 0; i < 4; i++)
+                {
+                    for (int j = 0; j < 4; j++)
+                    {
+                        if (y[i] == x[j])
+                        {
+                            picas++;
+                        }
+                    }
+                }
+            for (int i = 0; i < 4; i++)
+            {
+                if (y[i] == x[i])
+                {
+                    fijas++;
+                }
+            }
+            Label2.Text = fijas + " Fijas ";
+            if (fijas == 4)
+            {
+                Label2.Text = "Felicidades ganaste!";
+                for (int i = 0; i < 4; i++)
+                {
+                    Label3.Text=  ""+x[i];
+                }
+                break;
+            }
+            picas -= fijas;
+            Label3.Text = picas + " Picas "; ;
+
+            if (a == 2)
+            {
+                Label4.Text = "Perdiste :c";
+                Label3.Text = "El numero correcto era: ";
+                for (int i = 0; i < 4; i++)
+                {
+                   Label5.Text = ""+ x[i];
+                }
+            }
+            picas = 0;
+            fijas = 0;
+        }
+    }
+        
+}
